@@ -1,16 +1,30 @@
 from math import sqrt
+import ipdb
+
+
+def fomat(num):
+    num = round(num, 2)
+    if int(num) == num:
+        return int(num)
+    return num
+
 
 def checkio(data):
-   # data = [char for char in data if char.isdigit()]
-    mid1 = (int(data[0][0]) + int(data[1][0]))/2, (int(data[0][1]) + int(data[1][1]))/2
-    mid2 = (int(data[0][0]) + int(data[2][0]))/2, (int(data[0][1]) + int(data[2][1]))/2
-    k1 = -1.0*((int(data[1][1])- int(data[0][1]))/(int(data[1][0])- int(data[0][0])))
-    k2 = -1.0*((int(data[2][1])- int(data[0][1]))/(int(data[2][0])- int(data[0][0])))
-    x0 = mid1[0] + k1 * (mid1[0]-mid2[0])/(k2-k1)
-    y0 = mid1[1] + k1 * (mid1[1]-mid2[1])/(k2-k1)
-    r = sqrt((x0-mid1[0])**2 + (y0-mid1[1])**2))
+    x1, y1, x2, y2, x3, y3 = map(int, str(data).translate(None, '()').split(','))
+    mx1, my1 = (x1 + x2)/2.0, (y1 + y2)/2.0
+    mx2, my2 = (x1 + x3)/2.0, (y1 + y3)/2.0
+    kx1, ky1 = y1-y2, x2-x1
+    kx2, ky2 = y1-y3, x3-x1
+    # y-my1 = (ky1/kx1)(x-mx1) --> kx1*(y-my1) = ky1*(x-mx1) --> kx1*kx2*(y-my1) = kx2*ky1*(x-mx1)
+    # y-my2 = (ky2/kx2)(x-mx2) --> kx2*(y-my2) = ky2*(x-mx2) --> kx1*kx2*(y-my2) = kx1*ky2*(x-mx2)
+    # --> (my2-my1) * kx1 * kx2 = x(kx2*ky1-kx1*ky2) + mx2*kx1*ky2 - mx1*kx2*ky1
+    x = ((my2-my1) * kx1 * kx2 - mx2*kx1*ky2 + mx1*kx2*ky1)/(kx2*ky1-kx1*ky2)
+    y = ((mx2-mx1) * ky1 * ky2 - my2*ky1*kx2 + my1*ky2*kx1)/(ky2*kx1-ky1*kx2)
+    r = sqrt((x-x1)**2 + (y-y1)**2)
+    x, y, r = fomat(x), fomat(y), fomat(r)
     #replace this for solution
-    return "(x-{})^2+(y-{})^2={}^2".format(x0, y0, r)
+    result = "(x-{})^2+(y-{})^2={}^2".format(x, y, r)
+    return result
 
 #These "asserts" using only for self-checking and not necessary for auto-testing
 if __name__ == '__main__':
