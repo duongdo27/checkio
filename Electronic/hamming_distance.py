@@ -1,8 +1,9 @@
 def checkio(n, m):
     n = bin(n)[2:]
     m = bin(m)[2:]
-    n = (32- len(n))*'0' + n
-    m = (32- len(m))*'0' + m
+    ma = max(len(n), len(m))
+    n = (ma - len(n))*'0' + n
+    m = (ma - len(m))*'0' + m
     count = 0
     for index, value in enumerate(n):
         if value != m[index]:
